@@ -8,7 +8,7 @@
 
     "accessories": [
         {
-            "accessory": "Thermostat",
+            "accessory": "Thermostat-Brizzz",
             "name": "Thermostat Demo",
             "apiroute": "http://myurl.com",
             //optional
@@ -32,7 +32,7 @@ var request = require("request");
 module.exports = function(homebridge){
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  homebridge.registerAccessory("homebridge-thermostat", "Thermostat", Thermostat);
+  homebridge.registerAccessory("homebridge-thermostat-brizzz", "Thermostat-Brizzz", Thermostat);
 };
 
 
@@ -65,7 +65,7 @@ function Thermostat(log, config) {
 	this.heatingCoolingState = Characteristic.CurrentHeatingCoolingState.AUTO;
 	this.targetTemperature = 21;
 	this.targetRelativeHumidity = 0.5;
-	this.heatingThresholdTemperature = 25;
+	this.heatingThresholdTemperature = 21;
 	this.coolingThresholdTemperature = 5;
 	// The value property of TargetHeatingCoolingState must be one of the following:
 	//Characteristic.TargetHeatingCoolingState.OFF = 0;
@@ -186,6 +186,7 @@ Thermostat.prototype = {
 				this.log("response success");
 				var json = JSON.parse(body); //{targetHeatingCoolingState":3,"currentHeatingCoolingState":0"temperature":"18.10","humidity":"34.10"}
 				this.targetTemperature = parseFloat(json.targetTemperature);
+				this.heatingThresholdTemperature = parseFloat(json.targetTemperature);
 				this.log("Target temperature is %s", this.targetTemperature);
 				callback(null, this.targetTemperature); // success
 			} else {
